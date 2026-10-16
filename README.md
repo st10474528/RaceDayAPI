@@ -1,4 +1,4 @@
-RaceDay Event Management System - Part 1
+RaceDay Event Management System - Part 1 and part 2
 📋 Table of Contents
 System Overview
 
