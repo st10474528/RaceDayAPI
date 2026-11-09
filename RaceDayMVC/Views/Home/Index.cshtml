@@ -1,0 +1,86 @@
+﻿@using RaceDayMVC.Services
+@{
+    ViewData["Title"] = "Home Page";
+    var user = Context.Session.GetUser();
+}
+<style>
+    .hero-section {
+        /* A dynamic running image from Unsplash */
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1552674605-db6ffd4facb5?q=80&w=2000&auto=format&fit=crop');
+        background-size: cover;
+        background-position: center;
+        color: white;
+        padding: 120px 20px;
+        border-radius: 15px;
+        margin-bottom: 40px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .hero-title {
+        font-size: 4rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .hero-subtitle {
+        font-size: 1.5rem;
+        font-weight: 300;
+        margin-bottom: 30px;
+    }
+
+    .feature-icon {
+        font-size: 3rem;
+        color: #0d6efd;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="container mt-4">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <h1 class="hero-title">Push Your Limits</h1>
+        <p class="hero-subtitle">Join the ultimate running, walking, and cycling events across South Africa.</p>
+
+        @if (user == null)
+        {
+            <a asp-controller="Auth" asp-action="Register" class="btn btn-primary btn-lg px-5 py-3 mt-3 fw-bold">Get Started</a>
+            <a asp-controller="Auth" asp-action="Login" class="btn btn-outline-light btn-lg px-5 py-3 mt-3 ms-2">Login</a>
+        }
+        else if (user.Value.Role == "Participant")
+        {
+            <a asp-controller="Events" asp-action="Index" class="btn btn-primary btn-lg px-5 py-3 mt-3 fw-bold">Browse Upcoming Events</a>
+        }
+        else if (user.Value.Role == "Organiser")
+        {
+            <a asp-controller="OrganiserDashboard" asp-action="Index" class="btn btn-success btn-lg px-5 py-3 mt-3 fw-bold">Go to My Dashboard</a>
+        }
+    </div>
+
+    <!-- Features Section -->
+    <div class="row text-center mt-5 mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0 p-4">
+                <div class="feature-icon">🏃‍♂️</div>
+                <h4 class="fw-bold">Find Your Race</h4>
+                <p class="text-muted">Browse hundreds of road runs, community walks, and cycling challenges near you.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0 p-4">
+                <div class="feature-icon">🏅</div>
+                <h4 class="fw-bold">Track Your Results</h4>
+                <p class="text-muted">View your personal race history, finish times, and see where you rank in your category.</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0 p-4">
+                <div class="feature-icon">⚡</div>
+                <h4 class="fw-bold">Easy Enrolment</h4>
+                <p class="text-muted">Enter an event in seconds. Pick your category, secure your spot, and get ready to race.</p>
+            </div>
+        </div>
+    </div>
+</div>
