@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RaceDayAPI.Models;
@@ -24,6 +23,10 @@ public class User
 
     [MaxLength(20)]
     public string? PhoneNumber { get; set; }
+
+   
+    [MaxLength(500)]
+    public string? ProfilePictureUrl { get; set; }
 
     [Required, MaxLength(20)]
     public string Role { get; set; } = string.Empty;

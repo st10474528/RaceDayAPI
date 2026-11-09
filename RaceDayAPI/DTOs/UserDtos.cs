@@ -6,6 +6,7 @@ public record UserProfileDto(
     string LastName,
     string Email,
     string? PhoneNumber,
+    string? ProfilePictureUrl, // 👈 Added here
     string Role,
     DateTime CreatedAt);
 
