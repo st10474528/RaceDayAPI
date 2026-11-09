@@ -1,0 +1,10 @@
+## Ignore Visual Studio temporary files, build results, and secrets
+bin/
+obj/
+.vs/
+*.user
+*.suo
+TestResults/
+
+# Ignore the Azure secret file
+appsettings.Development.json
