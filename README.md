@@ -706,6 +706,84 @@ Full request/response schemas are visible in Swagger UI at https://localhost:710
 CI/CD
 The GitHub Actions workflow in .github/workflows/ci.yml runs on every push and pull request to main or part2. It:
 
+
+
+
+markdown
+# RaceDay Event Management System
+
+**Module:** PROG6212 (Programming 2B)
+**Student Name:** [Your Full Name]
+**Student Number:** [Your Student Number]
+**Institution:** The Independent Institute of Education (IIE)
+
+## 📖 System Overview
+RaceDay is a full-stack web-based event management system designed for the South African road running, walking, and cycling community. It replaces paper-based registration with a modern, digital platform. 
+
+This repository contains the complete portfolio of evidence (POE) for Parts 1, 2, and 3, including the database planning, RESTful API, MVC web application, Azure Blob Storage integration, and Docker containerisation.
+
+## 👥 User Roles
+The system supports two distinct roles, enforced at both the API and MVC levels:
+*   **Organiser:** Can create, edit, and delete events; manage age/distance categories; view participant enrolments; and capture/post race results.
+*   **Participant:** Can browse upcoming events, enrol in specific categories, view their enrolment status, and track their personal race history and results.
+
+## 🛠️ Tech Stack
+*   **Backend:** ASP.NET Core 8 Web API (C#)
+*   **Database:** SQL Server (Entity Framework Core - Code First)
+*   **Frontend:** ASP.NET Core MVC (Razor Views, Bootstrap 5)
+*   **Authentication:** Session-based (Cookies) with BCrypt password hashing
+*   **Cloud Storage:** Azure Blob Storage (via Azurite emulator for local dev)
+*   **Containerisation:** Docker & Docker Compose
+*   **Testing:** xUnit & Moq
+*   **CI/CD:** GitHub Actions
+
+## 🚀 Getting Started (Local Development)
+
+### Prerequisites
+*   Visual Studio 2022 (with ASP.NET and web development workload)
+*   .NET 8.0 SDK
+*   SQL Server LocalDB
+*   Azurite (Azure Storage Emulator)
+
+### 1. Database Setup
+1. Open the solution in Visual Studio.
+2. Open **Tools > NuGet Package Manager > Package Manager Console**.
+3. Ensure the Default project is set to `RaceDayAPI`.
+4. Run the following commands:
+   ```powershell
+   Add-Migration InitialCreate
+   Update-Database
+2. Running the Application
+Ensure you have Azurite running in the background (View > Terminal -> type azurite).
+
+Set Multiple Startup Projects (Right-click Solution -> Configure Startup Projects -> Set both RaceDayAPI and RaceDayMVC to Start).
+
+Press F5 to run.
+
+The API will launch Swagger, and the MVC app will open in your browser.
+
+
+Ensure Docker Desktop is running.
+
+Open a terminal in the root of the solution (where the docker-compose.yml is located).
+
+Run the following command:
+
+bash
+docker-compose up --build
+The MVC app will be accessible at http://localhost:7258.
+
+🔄 CI/CD Pipeline
+This project uses GitHub Actions for Continuous Integration. The workflow is triggered on every push to master/main and ensures the API and MVC projects build successfully and pass all unit tests.
+
+Green Build Status:
+https://docs/ci-screenshot.png
+(See the docs folder for the full resolution screenshot of the successful pipeline run).
+
+🎥 Video Demonstration
+Watch the full walkthrough of the application, database, API, and Docker setup here:
+👉 [(https://youtu.be/JRXupWTXiPc)]
+
 Restores NuGet packages
 
 Builds the solution in Release mode
