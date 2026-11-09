@@ -1,0 +1,63 @@
+﻿@model RaceDayMVC.Models.EventDto
+@using RaceDayMVC.Services
+@{
+    ViewData["Title"] = Model.Name;
+    var categories = ViewBag.Categories as List<RaceDayMVC.Models.CategoryDto> ?? new List<RaceDayMVC.Models.CategoryDto>();
+    var user = Context.Session.GetUser();
+}
+
+<div class="container mt-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-action="Index">Events</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <h1 class="card-title">@Model.Name</h1>
+            <h6 class="card-subtitle mb-3 text-muted">@Model.EventDate.ToString("dddd, dd MMMM yyyy") at @Model.Location</h6>
+
+            <p class="lead">@Model.Description</p>
+
+            <ul class="list-group list-group-flush mb-3">
+                <li class="list-group-item"><strong>Distance:</strong> @Model.Distance km</li>
+                <li class="list-group-item"><strong>Categories:</strong> @categories.Count</li>
+            </ul>
+
+            @if (user?.Role == "Participant")
+            {
+                <div class="mt-4 border-top pt-3">
+                    <h4>Enter this Event</h4>
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger">@TempData["Error"]</div>
+                    }
+                    <form method="post" asp-controller="Enrolments" asp-action="Enrol">
+                        <input type="hidden" name="EventID" value="@Model.EventID" />
+                        <div class="row align-items-end">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Select Category</label>
+                                <select name="CategoryID" class="form-select" required>
+                                    <option value="">-- Choose a category --</option>
+                                    @foreach (var cat in categories)
+                                    {
+                                        <option value="@cat.CategoryID">@cat.CategoryName</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <button type="submit" class="btn btn-success w-100">Enrol Now</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            }
+            else if (user == null)
+            {
+                <div class="alert alert-warning">Please <a asp-controller="Auth" asp-action="Login">Log in</a> as a Participant to enter this event.</div>
+            }
+        </div>
+    </div>
+</div>

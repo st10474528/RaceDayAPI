@@ -1,0 +1,46 @@
+﻿@model List<RaceDayMVC.Models.EventDto>
+@{
+    ViewData["Title"] = "Upcoming Events";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">Upcoming Events</h2>
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">No events found. Check back later!</div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var ev in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card shadow-sm h-100">
+                        @if (!string.IsNullOrEmpty(ev.BannerImageUrl))
+                        {
+                            <img src="@ev.BannerImageUrl" class="card-img-top" alt="Event Banner" style="height: 180px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="bg-secondary text-white d-flex align-items-center justify-content-center" style="height: 180px;">
+                                <h4>No Banner</h4>
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@ev.Name</h5>
+                            <p class="card-text text-muted mb-1">
+                                <strong>Date:</strong> @ev.EventDate.ToString("dd MMM yyyy")<br />
+                                <strong>Location:</strong> @ev.Location<br />
+                                <strong>Distance:</strong> @ev.Distance km
+                            </p>
+                        </div>
+                        <div class="card-footer bg-white border-top-0">
+                            <a asp-action="Details" asp-route-id="@ev.EventID" class="btn btn-primary w-100">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
