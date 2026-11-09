@@ -12,6 +12,8 @@ public class EnrolmentsControllerTests
     private (EnrolmentsController controller, RaceDayAPI.Data.RaceDayDbContext db) Build(int userId, string role)
     {
         var db = TestDbFactory.Create();
+
+        // Participant
         db.Users.Add(new User
         {
             UserID = 3,
@@ -21,7 +23,18 @@ public class EnrolmentsControllerTests
             PasswordHash = "x",
             Role = "Participant"
         });
-        db.EventTypes.Add(new EventType { EventTypeID = 1, TypeName = "Run" });
+
+        // Organiser for the event (FK)
+        db.Users.Add(new User
+        {
+            UserID = 1,
+            FirstName = "Thabo",
+            LastName = "Mokoena",
+            Email = "thabo@raceday.co.za",
+            PasswordHash = "x",
+            Role = "Organiser"
+        });
+
         db.Events.Add(new Event
         {
             EventID = 1,
@@ -32,7 +45,14 @@ public class EnrolmentsControllerTests
             Location = "JHB",
             Distance = 10m
         });
-        db.Categories.Add(new Category { CategoryID = 1, EventID = 1, CategoryName = "Senior" });
+
+        db.Categories.Add(new Category
+        {
+            CategoryID = 1,
+            EventID = 1,
+            CategoryName = "Senior"
+        });
+
         db.SaveChanges();
 
         var http = new DefaultHttpContext();
@@ -50,7 +70,10 @@ public class EnrolmentsControllerTests
     public async Task Enrol_AsParticipant_ReturnsCreated()
     {
         var (controller, _) = Build(3, "Participant");
-        var result = await controller.Enrol(new CreateEnrolmentDto(1, 1));
+
+        // 👇 FIXED: Passed eventId (1) as the first argument
+        var result = await controller.Enrol(1, new CreateEnrolmentDto(1, 1));
+
         Assert.IsType<CreatedAtActionResult>(result);
     }
 
@@ -58,8 +81,11 @@ public class EnrolmentsControllerTests
     public async Task Enrol_Duplicate_ReturnsConflict()
     {
         var (controller, _) = Build(3, "Participant");
-        await controller.Enrol(new CreateEnrolmentDto(1, 1));
-        var result = await controller.Enrol(new CreateEnrolmentDto(1, 1));
+
+        // 👇 FIXED: Passed eventId (1)
+        await controller.Enrol(1, new CreateEnrolmentDto(1, 1));
+        var result = await controller.Enrol(1, new CreateEnrolmentDto(1, 1));
+
         Assert.IsType<ConflictObjectResult>(result);
     }
 
@@ -67,7 +93,10 @@ public class EnrolmentsControllerTests
     public async Task Enrol_InvalidCategory_ReturnsBadRequest()
     {
         var (controller, _) = Build(3, "Participant");
-        var result = await controller.Enrol(new CreateEnrolmentDto(1, 999));
+
+        // 👇 FIXED: Passed eventId (1)
+        var result = await controller.Enrol(1, new CreateEnrolmentDto(1, 999));
+
         Assert.IsType<BadRequestObjectResult>(result);
     }
 }
