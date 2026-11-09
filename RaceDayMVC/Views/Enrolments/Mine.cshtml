@@ -1,0 +1,53 @@
+﻿@model List<RaceDayMVC.Models.EnrolmentDto>
+@{
+    ViewData["Title"] = "My Enrolments";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>My Enrolments</h2>
+        <a asp-controller="Events" asp-action="Index" class="btn btn-outline-primary">Browse More Events</a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (!Model.Any())
+    {
+        <div class="alert alert-info">You haven't enrolled in any events yet.</div>
+    }
+    else
+    {
+        <div class="card shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Enrolment ID</th>
+                            <th>Event ID</th>
+                            <th>Category ID</th>
+                            <th>Date Enrolled</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            var statusClass = item.Status == "Confirmed" ? "bg-success" :
+                            item.Status == "Pending" ? "bg-warning text-dark" : "bg-danger";
+                            <tr>
+                                <td>@item.EnrolmentID</td>
+                                <td>@item.EventID</td>
+                                <td>@item.CategoryID</td>
+                                <td>@item.EnrolmentDate.ToString("dd MMM yyyy HH:mm")</td>
+                                <td><span class="badge @statusClass">@item.Status</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
